@@ -28,7 +28,7 @@ class Settings {
 	/**
 	 * Path to folder writable by www-data but not accessable by webserver
 	 */
-	const DATAPATH = "/TempCredentials/";
+	const DATAPATH = "./model/DataForTempCredentials/";
 
 	/**
 	 * Salt for creating temporary passwords
@@ -40,5 +40,5 @@ class Settings {
 	 * Show errors 
 	 * boolean true | false
 	 */
-	const DISPLAY_ERRORS = false;
+	const DISPLAY_ERRORS = true;
 }
