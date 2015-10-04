@@ -28,7 +28,7 @@ class Settings {
 	/**
 	 * Path to folder writable by www-data but not accessable by webserver
 	 */
-	const DATAPATH = "/TempCredentials";
+	const DATAPATH = "/TempCredentials/";
 
 	/**
 	 * Salt for creating temporary passwords
