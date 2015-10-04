@@ -40,5 +40,5 @@ class Settings {
 	 * Show errors 
 	 * boolean true | false
 	 */
-	const DISPLAY_ERRORS = true;
+	const DISPLAY_ERRORS = false;
 }
