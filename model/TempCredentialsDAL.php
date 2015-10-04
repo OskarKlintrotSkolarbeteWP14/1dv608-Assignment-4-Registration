@@ -20,11 +20,8 @@ class TempCredentialsDAL {
 			}
 
 		}
-
 		return null;
 	}
-
-	
 
 	public function save(LoggedInUser $user, TempCredentials $t) {
 		file_put_contents( self::getFileName($user->getUserName()), serialize($t) );
@@ -32,6 +29,6 @@ class TempCredentialsDAL {
 
 	private function getFileName($userName) {
 		//TODO: replace the addslashes with something that makes username safe for use in filesystem
-		return \Settings::DATAPATH . addslashes($userName);
+		return \Settings::DATAPATH . $userName;
 	}
 }
