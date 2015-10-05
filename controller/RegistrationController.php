@@ -21,4 +21,8 @@ class RegistrationController
         $this->view =  $view;
     }
 
+    public function doRegistration() {
+
+    }
+
 }
