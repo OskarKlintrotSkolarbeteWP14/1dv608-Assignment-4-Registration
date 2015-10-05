@@ -18,7 +18,7 @@ class LayoutView {
     <h1>Assignment 4</h1>
     <?php
       if($registerNewUser){
-        echo '<a href="./">Go back</a>';
+        echo '<a href="./">Back to login</a>';
       } else {
         echo '<a href="?register">Register a new user</a>';
       }
