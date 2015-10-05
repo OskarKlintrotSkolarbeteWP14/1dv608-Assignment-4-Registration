@@ -9,6 +9,8 @@
 namespace controller;
 
 //App specific
+use view\RegistrationView;
+
 require_once("view/DateTimeView.php");
 require_once("view/LayoutView.php");
 
@@ -28,6 +30,8 @@ class MasterController
     private $m_Registration;
     private $v_Registration;
     private $c_Registration;
+    private $loggedIn = false;
+    private $registerNewUser = false;
 
     public function run() {
         //Dependency injection
@@ -40,12 +44,20 @@ class MasterController
         $c_Registration = new \controller\RegistrationController($v_Registration, $m_Registration);
 
         //Controller must be run first since state is changed
-        $c_Login->doControl();
-        $c_Registration->doRegistration();
+        if($c_Registration->userWantToRegister()) {
+            $viewToRender = $v_Registration;
+            $c_Registration->doRegistration();
+            $this->registerNewUser = true;
+        }
+        else {
+            $viewToRender = $v_Login;
+            $c_Login->doControl();
+            $this->loggedIn = $m_Login->isLoggedIn($v_Login->getUserClient());
+        }
 
         //Generate output
-        $dtv = new \view\DateTimeView();
-        $lv = new \view\LayoutView();
-        $lv->render($m_Login->isLoggedIn($v_Login->getUserClient()), $v_Login, $dtv);
+        $v_DateTime = new \view\DateTimeView();
+        $v_Layout = new \view\LayoutView();
+        $v_Layout->render($this->registerNewUser, $this->loggedIn, $viewToRender, $v_DateTime);
     }
 }

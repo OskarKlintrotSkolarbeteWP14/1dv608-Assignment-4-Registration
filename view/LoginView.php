@@ -5,7 +5,9 @@
   */
 namespace view;
 
-class LoginView {
+require_once("iLayoutView.php");
+
+class LoginView implements iLayoutView {
 	/**
 	 * These names are used in $_POST
 	 * @var string

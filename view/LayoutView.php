@@ -6,7 +6,7 @@
 namespace view;
 
 class LayoutView {
-  public function render($isLoggedIn, LoginView $v, DateTimeView $dtv) {
+  public function render($registerNewUser, $isLoggedIn, iLayoutView $v, DateTimeView $dtv) {
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,8 +16,12 @@ class LayoutView {
   </head>
   <body>
     <h1>Assignment 4</h1>
-    <a href="?register">Register a new user</a>
-    <?php 
+    <?php
+      if($registerNewUser){
+        echo '<a href="./">Go back</a>';
+      } else {
+        echo '<a href="?register">Register a new user</a>';
+      }
       if ($isLoggedIn) {
         echo "<h2>Logged in</h2>";
       } else {

@@ -21,6 +21,10 @@ class RegistrationController
         $this->view =  $view;
     }
 
+    public function userWantToRegister() {
+        return $this->view->userWantToRegister();
+    }
+
     public function doRegistration() {
 
     }
