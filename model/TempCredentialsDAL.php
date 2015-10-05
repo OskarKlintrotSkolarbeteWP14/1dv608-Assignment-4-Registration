@@ -13,7 +13,7 @@ class TempCredentialsDAL {
 	 */
 	public function load($userName) {
 		if ( file_exists(self::getFileName($userName)) ) {
-				set_error_handler($fileContent = file_get_contents(self::getFileName($userName)));
+				$fileContent = set_error_handler(file_get_contents(self::getFileName($userName)));
 				if ($fileContent !== FALSE)
 				{
 					return unserialize($fileContent);
