@@ -17,13 +17,15 @@ class RegistrationView implements iLayoutView
     private $register = "register";
 
 	private static $fontSize = 20;
-	private static $message = "RegisterView::Message";
+	private static $messageForm = "RegisterView::Message";
 	private static $username = "RegisterView::UserName";
 	private static $password = "RegisterView::Password";
 	private static $passwordRepeat = "RegisterView::PasswordRepeat";
 	private static $submitForm = "submit";
 	private static $doRegistrationForm = "DoRegistration";
 	private static $registerForm = "Register";
+
+	private $message = [];
 
     public function __construct(\model\RegistrationModel $model) {
         $this->model = $model;
@@ -36,11 +38,24 @@ class RegistrationView implements iLayoutView
 			return false;
     }
 
+	public function validate() {
+
+	}
+
+	private function renderMessages($messages){
+		$splitMessages = "";
+		$divider = "<br />";
+		foreach($messages as $message) {
+			$splitMessages .= $message . $divider;
+		}
+		return substr($splitMessages, 0, -strlen($divider));
+	}
+
     public function response() {
         return "<form action='?register' method='post' enctype='multipart/form-data'>
 				<fieldset>
 				<legend>Register a new user - Write username and password</legend>
-					<p id='".self::$message."'></p>
+					<p id='".self::$messageForm."'>".$this->renderMessages($this->message)."</p>
 					<label for='".self::$username."'>Username :</label>
 					<input type='text' size='".self::$fontSize."' name='".self::$username."' id='".self::$username."' value=''>
 					<br>
