@@ -30,7 +30,10 @@ class RegistrationView implements iLayoutView
     }
 
     public function userWantToRegister(){
-        return @parse_url($_SERVER['REQUEST_URI'])['query'] == $this->register;
+		if(strpos(@parse_url($_SERVER['REQUEST_URI'])['query'], $this->register) !== false)
+			return true;
+		else
+			return false;
     }
 
     public function response() {
