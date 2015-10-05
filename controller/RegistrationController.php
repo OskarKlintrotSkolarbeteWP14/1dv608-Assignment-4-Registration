@@ -8,8 +8,17 @@
 
 namespace controller;
 
+require_once("model/RegistrationModel.php");
+require_once("view/RegistrationView.php");
 
 class RegistrationController
 {
+    private $model;
+    private $view;
+
+    public function __construct(\view\RegistrationView $view, \model\RegistrationModel $model) {
+        $this->model = $model;
+        $this->view =  $view;
+    }
 
 }
