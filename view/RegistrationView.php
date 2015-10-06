@@ -131,12 +131,13 @@ class RegistrationView implements iLayoutView
 	}
 
     public function response() {
+		$username = strip_tags($this->getUsername());
         return "<form action='?register' method='post' enctype='multipart/form-data'>
 				<fieldset>
 				<legend>Register a new user - Write username and password</legend>
 					<p id='".self::$messageForm."'>".$this->renderMessages($this->message)."</p>
 					<label for='".self::$username."'>Username :</label>
-					<input type='text' size='".self::$fontSize."' name='".self::$username."' id='".self::$username."' value='" . $this->getUsername() . "'>
+					<input type='text' size='".self::$fontSize."' name='".self::$username."' id='".self::$username."' value='$username'>
 					<br>
 					<label for='".self::$password."'>Password  :</label>
 					<input type='password' size='".self::$fontSize."' name='".self::$password."' id='".self::$password."' value=''>
