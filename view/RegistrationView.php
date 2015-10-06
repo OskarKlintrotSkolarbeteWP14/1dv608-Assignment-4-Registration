@@ -136,7 +136,7 @@ class RegistrationView implements iLayoutView
 				<legend>Register a new user - Write username and password</legend>
 					<p id='".self::$messageForm."'>".$this->renderMessages($this->message)."</p>
 					<label for='".self::$username."'>Username :</label>
-					<input type='text' size='".self::$fontSize."' name='".self::$username."' id='".self::$username."' value=''>
+					<input type='text' size='".self::$fontSize."' name='".self::$username."' id='".self::$username."' value='" . $this->getUsername() . "'>
 					<br>
 					<label for='".self::$password."'>Password  :</label>
 					<input type='password' size='".self::$fontSize."' name='".self::$password."' id='".self::$password."' value=''>
