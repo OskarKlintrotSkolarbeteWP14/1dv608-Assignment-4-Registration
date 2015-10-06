@@ -82,7 +82,7 @@ class RegistrationView implements iLayoutView
 		try {
 			$validateUser->testValidUsername();
 		} catch (InvalidUsernameException $e) {
-			$this->message[] = "Username contains illegal characters.";
+			$this->message[] = "Username contains invalid characters.";
 		} catch (\Exception $e) {
 			$this->message[] = $e;
 		}
@@ -90,7 +90,7 @@ class RegistrationView implements iLayoutView
 		try {
 			$validateUser->testValidPassword();
 		} catch (InvalidPasswordException $e) {
-			$this->message[] = "Password contains illegal characters.";
+			$this->message[] = "Password contains invalid characters.";
 		} catch (\Exception $e) {
 			$this->message[] = $e;
 		}
