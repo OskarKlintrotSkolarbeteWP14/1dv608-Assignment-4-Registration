@@ -28,7 +28,7 @@ class RegistrationView implements iLayoutView
 	private static $password = "RegisterView::Password";
 	private static $passwordRepeat = "RegisterView::PasswordRepeat";
 	private static $submitForm = "submit";
-	private static $doRegistrationForm = "DoRegistration";
+	private static $doRegistrationForm = "RegisterView::Register";
 	private static $registerForm = "Register";
 
 	private $message = [];
