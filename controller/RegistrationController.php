@@ -25,8 +25,14 @@ class RegistrationController
         return $this->view->userWantToRegister();
     }
 
-    public function doRegistration() {
+    public function userWantToRegisterNewUser() {
+        return $this->view->userWantToRegisterNewUser();
+    }
 
+    public function doRegistration() {
+        if($this->view->validate()){
+            // Save user to db
+        }
     }
 
 }

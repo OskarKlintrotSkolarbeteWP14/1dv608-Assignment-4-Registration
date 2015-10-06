@@ -8,8 +8,14 @@
 
 namespace view;
 
+use exception\InvalidPasswordException;
+use exception\InvalidUsernameException;
+use exception\ToShortPasswordException;
+use exception\ToShortUsernameException;
+
 require_once("iLayoutView.php");
 require_once("model/RegistrationModel.php");
+require_once("model/ValidateUser.php");
 
 class RegistrationView implements iLayoutView
 {
@@ -38,8 +44,81 @@ class RegistrationView implements iLayoutView
 			return false;
     }
 
-	public function validate() {
+	public function userWantToRegisterNewUser(){
+		return isset($_POST[self::$doRegistrationForm]);
+	}
 
+	public function getUsername(){
+		if(isset($_POST[self::$username]))
+			return $_POST[self::$username];
+		else
+			return '';
+	}
+
+	private function getPassword(){
+		if(isset($_POST[self::$password]))
+			return $_POST[self::$password];
+		else
+			return '';
+	}
+
+	private function getPasswordRepeat(){
+		if(isset($_POST[self::$passwordRepeat]))
+			return $_POST[self::$passwordRepeat];
+		else
+			return '';
+	}
+
+	public function validate() {
+		unset($this->message);
+		$this->message = array() ;
+
+		$username = $this->getUsername();
+		$password = $this->getPassword();
+		$repeatedPassword = $this->getPasswordRepeat();
+
+		$validateUser = new \model\User($username, $password);
+
+		try {
+			$validateUser->testValidUsername();
+		} catch (InvalidUsernameException $e) {
+			$this->message[] = "Username contains illegal characters.";
+		} catch (\Exception $e) {
+			$this->message[] = $e;
+		}
+
+		try {
+			$validateUser->testValidPassword();
+		} catch (InvalidPasswordException $e) {
+			$this->message[] = "Password contains illegal characters.";
+		} catch (\Exception $e) {
+			$this->message[] = $e;
+		}
+
+		try {
+			$validateUser->testUsernameLength();
+		} catch (ToShortUsernameException $e) {
+			$this->message[] = "Username has too few characters, at least 3 characters.";
+		} catch (\Exception $e) {
+			$this->message[] = $e;
+		}
+
+		try {
+			$validateUser->testPasswordLength();
+		} catch (ToShortPasswordException $e) {
+			$this->message[] = "Password has too few characters, at least 6 characters.";
+		} catch (\Exception $e) {
+			$this->message[] = $e;
+		}
+
+		if ($password != $repeatedPassword) {
+			$this->message[] = "Passwords do not match.";
+		}
+
+		if (empty($this->message))
+			return true;
+		else
+			return false;
 	}
 
 	private function renderMessages($messages){

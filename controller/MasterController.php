@@ -46,8 +46,10 @@ class MasterController
         //Controller must be run first since state is changed
         if($c_Registration->userWantToRegister()) {
             $viewToRender = $v_Registration;
-            $c_Registration->doRegistration();
             $this->registerNewUser = true;
+            if($c_Registration->userWantToRegisterNewUser()) {
+                $c_Registration->doRegistration();
+            }
         }
         else {
             $viewToRender = $v_Login;
