@@ -15,16 +15,8 @@ class UserCredentials {
 	private $client;
 	
 	public function __construct($name, $password, $tempPassword, UserClient $client) {
-//		$newUsername =  htmlspecialchars($name);
-//		$newPassword = htmlspecialchars($password);
-		$newUsername =  $name;
-		$newPassword = $password;
-
-		$userToValidate = new ValidateUser($newUsername, $newPassword);
-		$userToValidate->runTests();
-
-		$this->userName = $newUsername ;
-		$this->password = $newPassword;
+		$this->userName =  htmlspecialchars($name);
+		$this->password = htmlspecialchars($password);
 		$this->tempPassword = $tempPassword;
 		$this->client = $client;
 	}
