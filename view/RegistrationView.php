@@ -77,7 +77,7 @@ class RegistrationView implements iLayoutView
 		$password = $this->getPassword();
 		$repeatedPassword = $this->getPasswordRepeat();
 
-		$validateUser = new \model\User($username, $password);
+		$validateUser = new \model\ValidateUser($username, $password);
 
 		try {
 			$validateUser->testValidUsername();

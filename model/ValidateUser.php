@@ -18,7 +18,7 @@ use exception\InvalidUsernameException;
 use exception\ToShortPasswordException;
 use exception\ToShortUsernameException;
 
-class User
+class ValidateUser
 {
     private $username;
     private $password;
