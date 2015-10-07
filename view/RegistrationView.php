@@ -31,7 +31,9 @@ class RegistrationView implements iLayoutView
 	private static $submitForm = "submit";
 	private static $doRegistrationForm = "RegisterView::Register";
 	private static $registerForm = "Register";
+	private static $successfulRegistration = "Registered new user.";
 	private static $storeUsernameDuringSession = "Success::Registration";
+	private static $sessionSaveMessage = "RegisterView::Success";
 
 	private $message = [];
 
@@ -131,6 +133,7 @@ class RegistrationView implements iLayoutView
 
 	public function registrationSuccessful() {
 		$_SESSION[self::$storeUsernameDuringSession] = $this->getUsername();
+		$_SESSION[self::$sessionSaveMessage] = self::$successfulRegistration;
 		$actual_link = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 		header("Location: $actual_link");
 	}
