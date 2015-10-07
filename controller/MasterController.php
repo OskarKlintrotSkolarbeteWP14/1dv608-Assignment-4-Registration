@@ -43,7 +43,7 @@ class MasterController
 
     public function run() {
         //Dependency injection
-        $this->m_DatabaseConnection = new model\DatabaseConnection();
+        $this->m_DatabaseConnection = new \DatabaseConnection();
 
         $this->m_Login = new model\LoginModel($this->m_DatabaseConnection);
         $this->v_Login = new view\LoginView($this->m_Login);
@@ -51,7 +51,7 @@ class MasterController
 
         $this->m_Registration = new model\RegistrationModel();
         $this->m_RegistrationDAL = new model\RegistrationDAL($this->m_DatabaseConnection);
-        $this->v_Registration = new view\RegistrationView($this->m_Registration);
+        $this->v_Registration = new view\RegistrationView($this->m_Registration, $this->m_RegistrationDAL);
         $this->c_Registration = new controller\RegistrationController($this->v_Registration, $this->m_Registration, $this->m_RegistrationDAL);
 
         //Controller must be run first since state is changed

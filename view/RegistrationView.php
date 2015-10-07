@@ -12,6 +12,7 @@ use exception\InvalidPasswordException;
 use exception\InvalidUsernameException;
 use exception\ToShortPasswordException;
 use exception\ToShortUsernameException;
+use exception\UserAlreadyExistException;
 use model\User;
 
 require_once("iLayoutView.php");
@@ -21,6 +22,7 @@ require_once("model/User.php");
 class RegistrationView implements iLayoutView
 {
     private $model;
+	private $dal;
     private $register = "register";
 
 	private static $fontSize = 20;
@@ -37,8 +39,9 @@ class RegistrationView implements iLayoutView
 
 	private $message = [];
 
-    public function __construct(\model\RegistrationModel $model) {
+    public function __construct(\model\RegistrationModel $model, \model\RegistrationDAL $dal) {
         $this->model = $model;
+		$this->dal = $dal;
     }
 
     public function userWantToRegister(){
@@ -119,7 +122,13 @@ class RegistrationView implements iLayoutView
 			$this->message[] = "Passwords do not match.";
 		}
 
-		// TODO: Add test for user exist!
+		try {
+			$this->dal->doUserExist($validateUser);
+		} catch (UserAlreadyExistException $e) {
+			$this->message[] = "User exists, pick another username.";
+		} catch (\Exception $e) {
+			$this->message[] = $e;
+		}
 
 		if (empty($this->message))
 			return true;

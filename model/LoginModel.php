@@ -27,7 +27,7 @@ class LoginModel {
 
 	private $tempDAL;
 
-	public function __construct(DatabaseConnection $databaseConnection) {
+	public function __construct(\DatabaseConnection $databaseConnection) {
 		$this->DatabaseConnection = $databaseConnection;
 
 		self::$sessionUserLocation .= \Settings::APP_SESSION_NAME;
