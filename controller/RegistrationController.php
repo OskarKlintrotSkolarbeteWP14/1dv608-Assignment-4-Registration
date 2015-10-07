@@ -33,6 +33,7 @@ class RegistrationController
 
     public function doRegistration() {
         $validationSuccess = $this->view->validate();
+        $saveMemberSuccess = false;
         if ($validationSuccess) {
             $saveMemberSuccess = $this->dal->SaveUser($this->view->getUser());
         }
