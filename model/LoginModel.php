@@ -10,12 +10,13 @@ require_once("TempCredentials.php");
 require_once("TempCredentialsDAL.php");
 require_once("LoggedInUser.php");
 require_once("UserClient.php");
-
+require_once("LoginDAL.php");
 
 
 class LoginModel {
 
-	private $DatabaseConnection;
+	private $database;
+	private $dal;
 
 	//TODO: Remove static to enable several sessions
 	private static $sessionUserLocation = "LoginModel::loggedInUser";
@@ -28,7 +29,8 @@ class LoginModel {
 	private $tempDAL;
 
 	public function __construct(\DatabaseConnection $databaseConnection) {
-		$this->DatabaseConnection = $databaseConnection;
+		$this->database = $databaseConnection;
+		$this->dal = new LoginDAL($databaseConnection);
 
 		self::$sessionUserLocation .= \Settings::APP_SESSION_NAME;
 
@@ -68,7 +70,10 @@ class LoginModel {
 		
 		$this->tempCredentials = $this->tempDAL->load($uc->getName());
 
-		$loginByUsernameAndPassword = \Settings::USERNAME === $uc->getName() && \Settings::PASSWORD === $uc->getPassword();
+		$validUser = $this->dal->getUserCredentials($uc->getName());
+
+//		$loginByUsernameAndPassword = \Settings::USERNAME === $uc->getName() && \Settings::PASSWORD === $uc->getPassword();
+		$loginByUsernameAndPassword = $validUser->getUsername() === $uc->getName() && password_verify($uc->getPassword(), $validUser->getPassword());
 		$loginByTemporaryCredentials = $this->tempCredentials != null && $this->tempCredentials->isValid($uc->getTempPassword());
 
 		if ( $loginByUsernameAndPassword || $loginByTemporaryCredentials) {
