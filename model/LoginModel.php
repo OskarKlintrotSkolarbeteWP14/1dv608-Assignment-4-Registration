@@ -18,8 +18,7 @@ class LoginModel {
 	private $database;
 	private $dal;
 
-	//TODO: Remove static to enable several sessions
-	private static $sessionUserLocation = "LoginModel::loggedInUser";
+	private $sessionUserLocation = "LoginModel::loggedInUser";
 
 	/**
 	 * @var null | TempCredentials
@@ -32,7 +31,7 @@ class LoginModel {
 		$this->database = $databaseConnection;
 		$this->dal = new LoginDAL($databaseConnection);
 
-		self::$sessionUserLocation .= \Settings::APP_SESSION_NAME;
+		$this->sessionUserLocation .= \Settings::APP_SESSION_NAME;
 
 		if (!isset($_SESSION)) {
 			//Alternate check with newer PHP
@@ -49,8 +48,8 @@ class LoginModel {
 	 * @return boolean                true if user is logged in.
 	 */
 	public function isLoggedIn(UserClient $userClient) {
-		if (isset($_SESSION[self::$sessionUserLocation])) {
-			$user = $_SESSION[self::$sessionUserLocation];
+		if (isset($_SESSION[$this->sessionUserLocation])) {
+			$user = $_SESSION[$this->sessionUserLocation];
 
 			if ($user->sameAsLastTime($userClient) == false) {
 				return false;
@@ -79,7 +78,7 @@ class LoginModel {
 		if ( $loginByUsernameAndPassword || $loginByTemporaryCredentials) {
 			$user = new LoggedInUser($uc); 
 
-			$_SESSION[self::$sessionUserLocation] = $user;
+			$_SESSION[$this->sessionUserLocation] = $user;
 
 			return true;
 		}
@@ -87,7 +86,7 @@ class LoginModel {
 	}
 
 	public function doLogout() {
-		unset($_SESSION[self::$sessionUserLocation]);
+		unset($_SESSION[$this->sessionUserLocation]);
 	}
 
 	/**
@@ -104,7 +103,7 @@ class LoginModel {
 	 */
 	public function renew(UserClient $userClient) {
 		if ($this->isLoggedIn($userClient)) {
-			$user = $_SESSION[self::$sessionUserLocation];
+			$user = $_SESSION[$this->sessionUserLocation];
 			$this->tempCredentials = new TempCredentials($user);
 			$this->tempDAL->save($user, $this->tempCredentials);
 		}
