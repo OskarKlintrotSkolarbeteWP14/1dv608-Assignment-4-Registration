@@ -20,6 +20,7 @@ class LoginView implements iLayoutView {
 	private static $CookiePassword = "LoginView::CookiePassword";
 	private static $keep = "LoginView::KeepMeLoggedIn";
 	private static $messageId = "LoginView::Message";
+	private static $storeUsernameDuringSession = "Success::Registration";
 
 	/**
 	 * This name is used in session
@@ -251,6 +252,8 @@ class LoginView implements iLayoutView {
 	}
 
 	private function getRequestUserName() {
+		if (isset($_SESSION[self::$storeUsernameDuringSession]))
+			return $_SESSION[self::$storeUsernameDuringSession];
 		if (isset($_POST[self::$name]))
 			return trim($_POST[self::$name]);
 		return "";

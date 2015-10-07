@@ -8,8 +8,13 @@
 
 namespace model;
 
+require_once("User.php");
 
 class RegistrationDAL
 {
+    public function SaveUser(User $user) {
+
+        return true;
+    }
 
 }

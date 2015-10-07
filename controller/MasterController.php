@@ -21,6 +21,7 @@ require_once("view/LoginView.php");
 //Registration
 require_once("controller/RegistrationController.php");
 require_once("view/RegistrationView.php");
+require_once("model/RegistrationDAL.php");
 
 class MasterController
 {
@@ -28,6 +29,7 @@ class MasterController
     private $v_Login;
     private $c_Login;
     private $m_Registration;
+    private $m_RegistrationDAL;
     private $v_Registration;
     private $c_Registration;
     private $loggedIn = false;
@@ -40,8 +42,9 @@ class MasterController
         $c_Login = new \controller\LoginController($m_Login, $v_Login);
 
         $m_Registration = new \model\RegistrationModel();
+        $m_RegistrationDAL = new \model\RegistrationDAL();
         $v_Registration = new \view\RegistrationView($m_Registration);
-        $c_Registration = new \controller\RegistrationController($v_Registration, $m_Registration);
+        $c_Registration = new \controller\RegistrationController($v_Registration, $m_Registration, $m_RegistrationDAL);
 
         //Controller must be run first since state is changed
         if($c_Registration->userWantToRegister()) {

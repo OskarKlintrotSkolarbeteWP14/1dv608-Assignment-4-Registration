@@ -8,17 +8,19 @@
 
 namespace controller;
 
-require_once("model/RegistrationModel.php");
+require_once("model/RegistrationDAL.php");
 require_once("view/RegistrationView.php");
 
 class RegistrationController
 {
     private $model;
     private $view;
+    private $dal;
 
-    public function __construct(\view\RegistrationView $view, \model\RegistrationModel $model) {
+    public function __construct(\view\RegistrationView $view, \model\RegistrationModel $model, \model\RegistrationDAL $registrationDAL) {
         $this->model = $model;
         $this->view =  $view;
+        $this->dal = $registrationDAL;
     }
 
     public function userWantToRegister() {
@@ -30,9 +32,15 @@ class RegistrationController
     }
 
     public function doRegistration() {
-        if($this->view->validate()){
-            // Save user to db
+        $validationSuccess = $this->view->validate();
+        if ($validationSuccess) {
+            $saveMemberSuccess = $this->dal->SaveUser($this->view->getUser());
         }
+        if ($saveMemberSuccess) {
+            $this->view->registrationSuccessful();
+            return true;
+        }
+        return false;
     }
 
 }

@@ -12,10 +12,11 @@ use exception\InvalidPasswordException;
 use exception\InvalidUsernameException;
 use exception\ToShortPasswordException;
 use exception\ToShortUsernameException;
+use model\User;
 
 require_once("iLayoutView.php");
 require_once("model/RegistrationModel.php");
-require_once("model/ValidateUser.php");
+require_once("model/User.php");
 
 class RegistrationView implements iLayoutView
 {
@@ -30,6 +31,7 @@ class RegistrationView implements iLayoutView
 	private static $submitForm = "submit";
 	private static $doRegistrationForm = "RegisterView::Register";
 	private static $registerForm = "Register";
+	private static $storeUsernameDuringSession = "Success::Registration";
 
 	private $message = [];
 
@@ -77,7 +79,7 @@ class RegistrationView implements iLayoutView
 		$password = $this->getPassword();
 		$repeatedPassword = $this->getPasswordRepeat();
 
-		$validateUser = new \model\ValidateUser($username, $password);
+		$validateUser = new User($username, $password);
 
 		try {
 			$validateUser->testValidUsername();
@@ -115,10 +117,21 @@ class RegistrationView implements iLayoutView
 			$this->message[] = "Passwords do not match.";
 		}
 
+		// TODO: Add test for user exist!
+
 		if (empty($this->message))
 			return true;
 		else
 			return false;
+	}
+
+	public function getUser(){
+		return new User($this->getUsername(), $this->getPassword());
+	}
+
+	public function registrationSuccessful() {
+		$_SESSION[self::$storeUsernameDuringSession] = $this->getUsername();
+		header("Location: ./");
 	}
 
 	private function renderMessages($messages){

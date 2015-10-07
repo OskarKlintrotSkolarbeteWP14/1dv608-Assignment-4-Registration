@@ -5,7 +5,7 @@
   */
 namespace model;
 
-require_once("ValidateUser.php");
+require_once("User.php");
 
 class UserCredentials {
 
