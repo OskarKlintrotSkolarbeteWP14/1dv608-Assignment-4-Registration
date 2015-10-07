@@ -9,8 +9,6 @@
 namespace controller;
 
 //App specific
-use view\RegistrationView;
-
 require_once("view/DateTimeView.php");
 require_once("view/LayoutView.php");
 
@@ -23,6 +21,13 @@ require_once("controller/RegistrationController.php");
 require_once("view/RegistrationView.php");
 require_once("model/RegistrationDAL.php");
 
+//Database
+require_once("model/DatabaseConnection.php");
+
+use controller;
+use model;
+use view;
+
 class MasterController
 {
     private $m_Login;
@@ -32,37 +37,40 @@ class MasterController
     private $m_RegistrationDAL;
     private $v_Registration;
     private $c_Registration;
+    private $m_DatabaseConnection;
     private $loggedIn = false;
     private $registerNewUser = false;
 
     public function run() {
         //Dependency injection
-        $m_Login = new \model\LoginModel();
-        $v_Login = new \view\LoginView($m_Login);
-        $c_Login = new \controller\LoginController($m_Login, $v_Login);
+        $this->m_DatabaseConnection = new model\DatabaseConnection();
 
-        $m_Registration = new \model\RegistrationModel();
-        $m_RegistrationDAL = new \model\RegistrationDAL();
-        $v_Registration = new \view\RegistrationView($m_Registration);
-        $c_Registration = new \controller\RegistrationController($v_Registration, $m_Registration, $m_RegistrationDAL);
+        $this->m_Login = new model\LoginModel($this->m_DatabaseConnection);
+        $this->v_Login = new view\LoginView($this->m_Login);
+        $this->c_Login = new controller\LoginController($this->m_Login, $this->v_Login);
+
+        $this->m_Registration = new model\RegistrationModel();
+        $this->m_RegistrationDAL = new model\RegistrationDAL($this->m_DatabaseConnection);
+        $this->v_Registration = new view\RegistrationView($this->m_Registration);
+        $this->c_Registration = new controller\RegistrationController($this->v_Registration, $this->m_Registration, $this->m_RegistrationDAL);
 
         //Controller must be run first since state is changed
-        if($c_Registration->userWantToRegister()) {
-            $viewToRender = $v_Registration;
+        if($this->c_Registration->userWantToRegister()) {
+            $viewToRender = $this->v_Registration;
             $this->registerNewUser = true;
-            if($c_Registration->userWantToRegisterNewUser()) {
-                $c_Registration->doRegistration();
+            if($this->c_Registration->userWantToRegisterNewUser()) {
+                $this->c_Registration->doRegistration();
             }
         }
         else {
-            $viewToRender = $v_Login;
-            $c_Login->doControl();
-            $this->loggedIn = $m_Login->isLoggedIn($v_Login->getUserClient());
+            $viewToRender = $this->v_Login;
+            $this->c_Login->doControl();
+            $this->loggedIn = $this->m_Login->isLoggedIn($this->v_Login->getUserClient());
         }
 
         //Generate output
-        $v_DateTime = new \view\DateTimeView();
-        $v_Layout = new \view\LayoutView();
+        $v_DateTime = new view\DateTimeView();
+        $v_Layout = new view\LayoutView();
         $v_Layout->render($this->registerNewUser, $this->loggedIn, $viewToRender, $v_DateTime);
     }
 }

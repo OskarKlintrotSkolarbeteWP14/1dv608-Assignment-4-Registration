@@ -12,6 +12,12 @@ require_once("User.php");
 
 class RegistrationDAL
 {
+    private $DatabaseConnection;
+
+    public function __construct(DatabaseConnection $databaseConnection) {
+        $this->DatabaseConnection = $databaseConnection;
+    }
+
     public function SaveUser(User $user) {
 
         return true;

@@ -1,0 +1,4 @@
+DB_HOST = http://45.55.147.164/
+DB_DATABASE = stoneage
+DB_USERNAME = oskar
+DB_PASSWORD = stoneage2015

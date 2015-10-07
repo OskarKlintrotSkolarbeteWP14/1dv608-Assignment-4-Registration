@@ -182,6 +182,7 @@ class LoginView implements iLayoutView {
 		} else if (isset($_SESSION[self::$sessionSaveMessage])) {
 			$message = $_SESSION[self::$sessionSaveMessage];
 			unset($_SESSION[self::$sessionSaveMessage]);
+			// TODO: Clean up code
 		} else {
 			$message = $this->getSessionMessage();
 		}

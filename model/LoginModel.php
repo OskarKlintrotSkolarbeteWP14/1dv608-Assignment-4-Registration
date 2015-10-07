@@ -15,6 +15,8 @@ require_once("UserClient.php");
 
 class LoginModel {
 
+	private $DatabaseConnection;
+
 	//TODO: Remove static to enable several sessions
 	private static $sessionUserLocation = "LoginModel::loggedInUser";
 
@@ -25,7 +27,9 @@ class LoginModel {
 
 	private $tempDAL;
 
-	public function __construct() {
+	public function __construct(DatabaseConnection $databaseConnection) {
+		$this->DatabaseConnection = $databaseConnection;
+
 		self::$sessionUserLocation .= \Settings::APP_SESSION_NAME;
 
 		if (!isset($_SESSION)) {
