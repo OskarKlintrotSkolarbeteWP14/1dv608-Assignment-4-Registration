@@ -37,7 +37,7 @@ class RegistrationDAL
 
         $this->database->prepare('INSERT INTO users (username, password) VALUES (:username, :password)');
         $this->database->bindValue(':username', $user->getUsername());
-        $this->database->bindValue(':password', password_hash($user->getPassword(), PASSWORD_DEFAULT));
+        $this->database->bindValue(':password', \password_hash($user->getPassword(), PASSWORD_DEFAULT));
         $this->database->execute();
 
         return true;
